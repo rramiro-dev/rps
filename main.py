@@ -63,7 +63,7 @@ class User:
 def play_rps(user,pc):
     return choices_user[user][pc]
 
-def point_assignment():
+def assign_score():
     result = play_rps(user_ans,pc_ans)
     print(f'Elegiste {user_ans}... {result} contra {pc_ans}.')
     if result == 'ganaste':
@@ -106,13 +106,13 @@ for n in range(1, n_rounds):
             print(pc_ans) # quitar esta línea cuando sea necesario... es solo de prueba
             user_pick()
             if user_ans != pc_ans:
-                point_assignment()
+                assign_score()
                 break
             else:
                 while user_ans == pc_ans:
                     pc_pick()
                     user_pick()
-                point_assignment()
+                assign_score()
                 break
         except KeyError:
             print('Datos inválidos, Intente nuevamente...')
