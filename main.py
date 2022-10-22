@@ -12,14 +12,13 @@ Esta aplicación fue realizada en mis comienzos con python. La idea es practicar
     - piedra le gana a tijera, pero pierde con papel
     - tijera le gana a papel, pero pierde con piedra
     - papel le gana a piedra, pero pierde con tijera
-    - las tiradas pueden ser infinitas hasta que uno de los 2 jugadores abandone la partida
-    - si un usuario pierde 3 veces, su oponente gana, y se debe reiniciar o finalizar el juego
+    - se juega al mejor de 3. Quien gane más rondas en un total de 3, gana el juego
 - Conceptos utilizados:
     - librerias
     - arrays
-    - diccionarios
-    - objetos
-    - funciones
+    - diccionarios y acceso a sus claves y valores
+    - objetos y métodos
+    - funciones, con y sin argumentos
     - iteradores while y for
     - try/except
     - condicionales if/elif/else
@@ -45,14 +44,12 @@ choices_user = {
 }
 n_rounds = 4 # 3 rounds for the 'for' iterator
 
-
 # Clase constructora para cada usuario
 class User:
-    # constructor
     def __init__(self):
         self.nombre = None
         self.puntaje = 0
-    # metodos    
+    
     def welcome(self):
         print(f'Welcome to the game, {(self.nombre).title()}.')
     
@@ -62,10 +59,18 @@ class User:
     def username_set(self):
         self.nombre = input(f'Introduzca su nombre de usuario: ')
 
-
 # Definir funciones
 def play_rps(user,pc):
     return choices_user[user][pc]
+
+def point_assignment():
+    result = play_rps(user_ans,pc_ans)
+    print(f'Elegiste {user_ans}... {result} contra {pc_ans}.')
+    if result == 'ganaste':
+        username.add_points()
+    else:
+        pc.add_points()
+    print(f'Ronda {n} terminada.')
 
 def pc_pick():
     global pc_ans
@@ -83,7 +88,6 @@ def final_results():
     else:
         print(f'¡Es un empate! El partido salió {pc.puntaje} a {username.puntaje}.')
 
-
 # Instanciar valores de la PC
 pc = User()
 pc.nombre = 'PC'
@@ -96,31 +100,19 @@ username.welcome()
 
 # Lógica del juego
 for n in range(1, n_rounds):
-    pc_pick()
-    print(pc_ans) # quitar esta línea cuando sea necesario... es solo de prueba
     while True:
         try:
+            pc_pick()
+            print(pc_ans) # quitar esta línea cuando sea necesario... es solo de prueba
             user_pick()
             if user_ans != pc_ans:
-                result = play_rps(user_ans,pc_ans)
-                print(f'Elegiste {user_ans}... {result} contra {pc_ans}.')
-                if result == 'ganaste':
-                    username.add_points()
-                else:
-                    pc.add_points()
-                print(f'Ronda {n} terminada.')
+                point_assignment()
                 break
             else:
                 while user_ans == pc_ans:
                     pc_pick()
                     user_pick()
-                result = play_rps(user_ans,pc_ans)
-                print(f'Elegiste {user_ans}... {result} contra {pc_ans}.')
-                if result == 'ganaste':
-                    username.add_points()
-                else:
-                    pc.add_points()
-                print(f'Ronda {n} terminada.')
+                point_assignment()
                 break
         except KeyError:
             print('Datos inválidos, Intente nuevamente...')
